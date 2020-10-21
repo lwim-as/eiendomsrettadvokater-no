@@ -22,7 +22,6 @@ export default function Sidebar() {
                     advokat_type: ""
                 }}
                 onSubmit={async (values) => {
-                    console.log(helpers)
                     const res = await fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
