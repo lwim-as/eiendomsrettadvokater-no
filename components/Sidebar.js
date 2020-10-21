@@ -28,7 +28,6 @@ export default function Sidebar() {
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode({ "form-name": "contact", ...values })
                     })
-                    e.preventDefault();
                 }}
             >
                 <FormikStep>
