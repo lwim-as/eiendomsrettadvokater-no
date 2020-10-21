@@ -21,12 +21,17 @@ export default function Sidebar() {
                     description: "",
                     advokat_type: ""
                 }}
-                onSubmit={async (values) => {
+                onSubmit={async (values ) => {
+                    console.log(values)
                     const res = await fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode({ "form-name": "contact", ...values })
                     })
+
+                    const data = res.json()
+
+                    console.log(data)
                 }}
             >
                 <FormikStep>
@@ -42,6 +47,9 @@ export default function Sidebar() {
                         <option value="Nabotvister">Nabotvister</option>
                         <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
                     </Field>
+                </FormikStep>
+                <FormikStep>
+                    <Field name="description" as="textarea" />
                 </FormikStep>
                 <FormikStep>
                     <Field name="name" type="text" />
@@ -72,9 +80,9 @@ export function FormikStepper({ children, ...props }) {
     return (
         <Formik
             {...props}
-            onSubmit={async (values, helpers) => {
+            onSubmit={async (values, helpers, e) => {
                 if (isLastStep()) {
-                    await props.onSubmit(values, helpers)
+                    await props.onSubmit(values, helpers, e)
                 } else {
                     setStep(step => step + 1)
                 }
