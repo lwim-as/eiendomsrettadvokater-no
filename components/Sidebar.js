@@ -22,14 +22,12 @@ export default function Sidebar() {
                     advokat_type: ""
                 }}
                 onSubmit={async (values) => {
+                    console.log(helpers)
                     const res = await fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode({ "form-name": "contact", ...values })
                     })
-                    
-                    console.log(res)
-
                     e.preventDefault();
                 }}
             >
@@ -84,7 +82,6 @@ export function FormikStepper({ children, ...props }) {
                 }
             }}>
             <Form className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
-                <input type="hidden" name="form-name" value="contact" />
                 {currentChild}
                 {step > 0 ? <button onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
                 <button type="submit">{isLastStep() ? "Send" : "Neste"}</button>
