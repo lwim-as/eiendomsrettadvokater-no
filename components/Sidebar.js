@@ -1,14 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Field, Form, Formik } from 'formik';
+
 import { sidebar_container, form, form_step } from '../styles/Sidebar.module.css'
 
-function Sidebar() {
+export default function Sidebar() {
+
+    const encode = (data) => {
+        return Object.keys(data)
+            .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+            .join("&");
+    }
+
     return (
         <aside className={sidebar_container}>
-            <FormStepper>
-                <FormStep>
-                    <h2>Få tilbud fra flere advokater</h2>
-                    <p>Sammenlign tilbud fra flere advokater.<br /> Å motta tilbud er <u>gratis og uforpliktende</u>.</p>
-                    <select name="advokat-type">
+            <FormikStepper
+                initialValues={{
+                    name: "",
+                    phone: "",
+                    email: "",
+                    description: "",
+                    advokat_type: ""
+                }}
+                onSubmit={async (values) => {
+                    const res = await fetch("/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: encode({ "form-name": "contact", ...values })
+                    })
+                    
+                    console.log(res)
+
+                    e.preventDefault();
+                }}
+            >
+                <FormikStep>
+                    <Field name="advokat_type" as="select">
                         <option value="">---</option>
                         <option value="Annet">Annet</option>
                         <option value="Heve boligkjøp">Heve boligkjøp</option>
@@ -19,54 +45,50 @@ function Sidebar() {
                         <option value="Håndverkertvister">Håndverkertvister</option>
                         <option value="Nabotvister">Nabotvister</option>
                         <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
-                    </select>
-                </FormStep>
-                <FormStep>
-                    <textarea name="oppdragsbeskrivelse"/>
-                </FormStep>
-                <FormStep>
-                    <input type="text" name="name"/>
-                    <input type="email" name="email"/>
-                    <input type="tel" name="phone"/>
-                </FormStep>
-            </FormStepper>
+                    </Field>
+                </FormikStep>
+                <FormikStep>
+                    <Field name="name" type="text" />
+                    <Field name="email" type="email" />
+                    <Field name="phone" type="tel" />
+                </FormikStep>
+            </FormikStepper>
         </aside>
-    )
+    );
 }
 
-export default Sidebar
+export function FormikStep({ children }) {
+    return (
+        <div className={form_step}>{children}</div>)
+}
 
-export function FormStepper({ children }) {
+export function FormikStepper({ children, ...props }) {
+    const childrenArr = React.Children.toArray(children)
+
     const [step, setStep] = useState(0)
-    const formSteps = React.Children.toArray(children)
+    const currentChild = childrenArr[step]
 
-    const currentStep = formSteps[step]
 
     function isLastStep() {
-        return step === formSteps.length - 1
-    }
-
-    function handleSubmit(e) {
-        if (!isLastStep()) {
-            e.preventDefault()
-            setStep(step => step + 1)
-        }
+        return step === childrenArr.length - 1
     }
 
     return (
-        <form onSubmit={handleSubmit} className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="contact"/>
-            {currentStep}
-            {step > 0 ? <button onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
-            <button type="submit">{isLastStep() ? "Send" : "Neste"}</button>
-        </form>
-    )
-}
-
-export function FormStep({ children }) {
-    return (
-        <div className={form_step}>
-            {children}
-        </div>
+        <Formik
+            {...props}
+            onSubmit={async (values, helpers) => {
+                if (isLastStep()) {
+                    await props.onSubmit(values, helpers)
+                } else {
+                    setStep(step => step + 1)
+                }
+            }}>
+            <Form className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="contact" />
+                {currentChild}
+                {step > 0 ? <button onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
+                <button type="submit">{isLastStep() ? "Send" : "Neste"}</button>
+            </Form>
+        </Formik>
     )
 }
