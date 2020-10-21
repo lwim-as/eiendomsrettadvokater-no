@@ -8,7 +8,7 @@ function Sidebar() {
                 <FormStep>
                     <h2>Få tilbud fra flere advokater</h2>
                     <p>Sammenlign tilbud fra flere advokater.<br /> Å motta tilbud er <u>gratis og uforpliktende</u>.</p>
-                    <input type="hidden" name="form-adokat-type" value="contact"/>
+                    <input type="hidden" name="form-name" value="contact"/>
                     <select name="advokat-type">
                         <option value="">---</option>
                         <option value="Annet">Annet</option>
@@ -21,15 +21,6 @@ function Sidebar() {
                         <option value="Nabotvister">Nabotvister</option>
                         <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
                     </select>
-                </FormStep>
-                <FormStep>
-                    <label>
-                        Navn:
-                        <input type="text" name="name" />
-                    </label>
-                </FormStep>
-                <FormStep>
-
                 </FormStep>
             </FormStepper>
         </aside>
