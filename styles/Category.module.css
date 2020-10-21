@@ -1,0 +1,24 @@
+.header {
+    margin-top: 1rem;
+    padding: 5em 6.67em 3.33333em;
+    width: 100%;
+    background-color: #eee;
+}
+
+.category_content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.content_container {
+    border-bottom: #eaeaea solid 1px;
+    margin-bottom: 1rem;
+    padding: 0 6.67em 1rem;
+}
+
+.content_container h2 {
+    text-decoration: none;
+    margin-bottom: 0;
+    line-height: 1.3;
+    font-size: 2.7rem;
+}

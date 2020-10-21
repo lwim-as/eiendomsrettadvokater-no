@@ -1,65 +1,65 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useEffect, useState } from 'react'
+import FrontPagePost from '../components/FrontPagePost'
+import { getPaginatedPosts } from '../lib/graphql-api'
 
-export default function Home() {
+import { header, content_container, category_content, load_more_btn } from "../styles/Home.module.css"
+
+function Home({ posts }) {
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [fetchedData, setFetchedData] = useState([])
+  const [pageInfo, setPageInfo] = useState({})
+
+  useEffect(() => {
+    setPageInfo({
+      hasNextPage: posts.pageInfo.hasNextPage,
+      endCursor: posts.pageInfo.endCursor
+    })
+  }, [])
+
+  useEffect(() => {
+    if (currentPage < 2) return
+
+    async function fetchMorePosts() {
+      setIsLoading(true)
+      if (pageInfo.hasNextPage) {
+        const { posts: nextPosts } = await getPaginatedPosts(pageInfo.endCursor)
+
+        setFetchedData([...fetchedData, ...nextPosts.edges])
+        setPageInfo({ hasNextPage: nextPosts.pageInfo.hasNextPage, endCursor: nextPosts.pageInfo.endCursor })
+        setIsLoading(false)
+      }
+    }
+    fetchMorePosts()
+
+  }, [currentPage])
+
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>Forbrukertorget</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <div className={category_content}>
+        {posts.edges.map(({ node }) => <FrontPagePost className={content_container} key={node.slug} post={node} />)}
+        {currentPage > 1 ? fetchedData.map(({ node }) => <FrontPagePost className={content_container} key={node.slug} post={node} />) : null}
+        {pageInfo.hasNextPage ? <button className={load_more_btn} disabled={isLoading} onClick={() => setCurrentPage(current => current + 1)}>{isLoading ? "Laster inn fler" : "Last inn fler"}</button> : null}
+      </div>
+    </>
   )
 }
+
+export async function getStaticProps() {
+  const { posts } = await getPaginatedPosts()
+
+  return {
+    props: {
+      posts
+    }
+  }
+}
+
+export default Home
