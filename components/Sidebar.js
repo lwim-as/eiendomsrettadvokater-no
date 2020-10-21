@@ -8,7 +8,6 @@ function Sidebar() {
                 <FormStep>
                     <h2>Få tilbud fra flere advokater</h2>
                     <p>Sammenlign tilbud fra flere advokater.<br /> Å motta tilbud er <u>gratis og uforpliktende</u>.</p>
-                    <input type="hidden" name="form-name" value="contact"/>
                     <select name="advokat-type">
                         <option value="">---</option>
                         <option value="Annet">Annet</option>
@@ -21,6 +20,14 @@ function Sidebar() {
                         <option value="Nabotvister">Nabotvister</option>
                         <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
                     </select>
+                </FormStep>
+                <FormStep>
+                    <textarea name="oppdragsbeskrivelse"/>
+                </FormStep>
+                <FormStep>
+                    <input type="text" name="name"/>
+                    <input type="email" name="email"/>
+                    <input type="tel" name="phone"/>
                 </FormStep>
             </FormStepper>
         </aside>
@@ -48,6 +55,7 @@ export function FormStepper({ children }) {
 
     return (
         <form onSubmit={handleSubmit} className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact"/>
             {currentStep}
             {step > 0 ? <button onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
             <button type="submit">{isLastStep() ? "Send" : "Neste"}</button>
