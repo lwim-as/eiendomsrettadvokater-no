@@ -27,9 +27,9 @@ export function CustomSelect({ name, hint, options}) {
 
     return (
         <div className={select_container}>
-            <div className={selected_item} onClick={() => setToggled(!toggled)}>
+            <div className={selected_item} onFocus={() => setToggled(!toggled)} onClick={() => setToggled(!toggled)}>
                 <p className={returnValue() === "" ? (select_header) : (select_header, has_selected)}>{hint}</p>
-                <p ref={inputRef} data-name={name}>{returnValue()}</p>
+                <p tabIndex={0} ref={inputRef} data-name={name}>{returnValue()}</p>
                 <i aria-hidden="true" className={`fal fa-${toggled ? "times" : "angle-down"} ${drop_btn}`}></i>
             </div>
             {toggled ? (

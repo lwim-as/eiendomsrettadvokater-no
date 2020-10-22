@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import FrontPagePost from '../components/FrontPagePost'
+import { FrontPagePost } from '../components/FrontPagePost'
 import { getPaginatedPosts } from '../lib/graphql-api'
 
-import { content_container, category_content, load_more_btn } from "../styles/Home.module.css"
+import { content_container, category_content, load_more_btn } from "../styles/FrontPage.module.css"
 
-function Home({ posts }) {
+function FrontPage({ posts }) {
 
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -62,4 +62,4 @@ export async function getStaticProps() {
   }
 }
 
-export default Home
+export default FrontPage

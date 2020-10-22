@@ -33,11 +33,8 @@
 .post_thumbnail {
     width: 30%;
     height: 150px;
-    background-position: center;
-    background-size: cover;
-    position: relative;
+    object-fit: cover;
     display: block;
-    align-self: center;
     margin-top: 10rem;
 }
 

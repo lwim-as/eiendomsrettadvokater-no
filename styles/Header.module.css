@@ -12,6 +12,7 @@
     align-items: center;
     height: 100%;
     position: relative;
+    padding: 0 .5rem;
 }
 
 .sitenav figure {
@@ -22,6 +23,8 @@
 
 .sitenav figure img {
     height: 100%;
+    max-width: unset;
+    width: auto;
 }
 
 .sitemenu {
@@ -36,4 +39,8 @@
     color: #3a3a3a;
     text-decoration: none;
     padding: 0 1em;
+}
+
+.sitemenu li:last-of-type a {
+    padding: 0;
 }

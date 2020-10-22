@@ -1,20 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { sidebar_container, form, form_step, disclaimer } from '../styles/Sidebar.module.css'
+import { sidebar_container } from '../styles/Sidebar.module.css'
+
 import { CustomSelect } from './CustomSelect';
-import Link from 'next/link';
-
 import { FormContext } from '../FormContext'
-import { useRouter } from 'next/router';
+import { MultistepForm } from './Form/MultistepForm';
+import { FormStep } from './Form/FormStep';
+import { FormField } from './Form/FormField';
 
 export default function Sidebar() {
 
     const { state, setState } = useContext(FormContext)
-    const encode = (data) => {
-        return Object.keys(data)
-            .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-            .join("&");
-    }
 
     function handleChange(e) {
         const { name, value } = e.target
@@ -29,22 +25,7 @@ export default function Sidebar() {
 
     return (
         <aside className={sidebar_container}>
-            <MultistepForm
-                handleSubmit={(state) => {
-                    let data = {}
-
-                    state.forEach(item => {
-                        data = { ...data, [item.name]: item.value }
-                    })
-
-                    console.log(data)
-                    return fetch("/", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode({ "form-name": "sidebar", ...data })
-                    })
-                }}
-            >
+            <MultistepForm>
                 <FormStep>
                     <h2>Få tilbud fra flere advokater</h2>
                     <p>Sammenlign tilbud fra flere advokater.<br />Å motta tilbud er <u>gratis og uforpliktende.</u></p>
@@ -92,80 +73,4 @@ export default function Sidebar() {
             </MultistepForm>
         </aside>
     );
-}
-
-export function FormStep({ children }) {
-    return <div className={form_step}>{children}</div>
-}
-
-export function MultistepForm({ children, handleSubmit }) {
-    const router = useRouter()
-    const { state } = useContext(FormContext)
-
-    const childrenArr = React.Children.toArray(children)
-
-    const [step, setStep] = useState(0)
-    const currentChild = childrenArr[step]
-
-    function isLastStep() {
-        return step === childrenArr.length - 1
-    }
-
-    return (
-        <form
-            onSubmit={async (e) => {
-                e.preventDefault()
-                if (isLastStep()) {
-                    const res = await handleSubmit(state)
-
-                    if (res.status === 200) {
-                        router.push("/tilbud-mottatt")
-                    } else {
-                        console.log(state.error)
-                    }
-
-                } else {
-                    setStep(step => step + 1)
-                }
-            }}
-            className={form}
-            name="sidebar"
-            method="post"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-        >
-            {state.map(item => <input key={item.name} hidden readOnly name={item.name} value={item.value} />)}
-            {currentChild}
-            <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>
-                {step > 0 ? <button type="button" onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
-                <button type="submit">{isLastStep() ? "Send" : (step === 0 ? "Få 3 tilbud" : "Neste")}</button>
-            </div>
-            {step === 0 ? (
-                <>
-                    <p style={{ textAlign: "center", fontWeight: "300", margin: "0" }}>En tjeneste av <Link href="https://advokatmatch.no"><a target="_blank" style={{ textDecoration: "underline", color: "blue" }}>advokatmatch.no</a></Link></p>
-                    <p className={disclaimer}>Informasjonen sendes kun til advokatene du mottar tilbud fra, og brukes ikke til noe annet.</p>
-                </>
-            ) : null}
-        </form>
-    )
-}
-
-export function FormField({ type = "text", name, label, handleChange }) {
-    const inputRef = useRef(null)
-
-    if (type !== "textarea") {
-        return (
-            <label>
-                {label}
-                <input ref={inputRef} name={name} onChange={handleChange} type={type} />
-            </label>
-        )
-    }
-
-    return (
-        <label>
-            {label}
-            <textarea ref={inputRef} onChange={handleChange} name={name} />
-        </label>
-    )
 }

@@ -7,6 +7,7 @@
 .site_footer * {
     color: #fff;
     font-weight: 500;
+    line-height: 1.6;
 }
 
 .footer_container {
@@ -28,6 +29,10 @@
 .footer_content:first-of-type {
     justify-content: center;
     align-items: center;
+}
+
+.footer_content img {
+    max-width: 200px;
 }
 
 .footer_content h4 {
