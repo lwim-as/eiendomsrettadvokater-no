@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { sidebar_container, form, form_step, disclaimer } from '../styles/Sidebar.module.css'
 import { CustomSelect } from './CustomSelect';
@@ -102,13 +102,6 @@ export function MultistepForm({ children, handleSubmit }) {
     const router = useRouter()
     const { state } = useContext(FormContext)
 
-    /*
-    function handleChange(e) {
-        console.log(state[name])
-        const { name, value } = e.target
-        setState({ [name]: value })
-    }*/
-
     const childrenArr = React.Children.toArray(children)
 
     const [step, setStep] = useState(0)
@@ -141,7 +134,7 @@ export function MultistepForm({ children, handleSubmit }) {
             data-netlify="true"
             data-netlify-honeypot="bot-field"
         >
-
+            {state.map(item => <input key={item.name} hidden readOnly name={item.name} value={item.value} />)}
             {currentChild}
             <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>
                 {step > 0 ? <button type="button" onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
