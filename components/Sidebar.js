@@ -25,12 +25,11 @@ export default function Sidebar() {
         <aside className={sidebar_container}>
             <MultistepForm
                 handleSubmit={(state) => {
-                    fetch("/", {
+                    return fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode({ "form-name": "sidebar", ...state })
                     })
-                        .then(() => alert("Success"))
                 }}
             >
                 <FormStep>
@@ -95,10 +94,10 @@ export function MultistepForm({ children, handleSubmit }) {
 
     return (
         <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
                 e.preventDefault()
                 if (isLastStep()) {
-                    handleSubmit()
+                    await handleSubmit(state)
                 } else {
                     setStep(step => step + 1)
                 }
