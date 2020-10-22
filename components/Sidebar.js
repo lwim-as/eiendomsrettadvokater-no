@@ -102,7 +102,7 @@ export function MultistepForm({ children, handleSubmit }) {
                     setStep(step => step + 1)
                 }
             }}
-            className={form} name="sidebar" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+            className={form} action="/tilbud-mottatt" name="sidebar" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
             <input onChange={handleChange} hidden disabled name="name" />
             <input onChange={handleChange} hidden disabled name="advokat_type" />
             <input onChange={handleChange} hidden disabled name="email" />

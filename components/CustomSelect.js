@@ -12,8 +12,6 @@ export function CustomSelect({ name, hint, options }) {
     function handleChange(e) {
         setState({ ...state, [inputRef.current.name]: e.target.textContent })
         setToggled(state => !state)
-
-        console.log(state)
     }
 
 

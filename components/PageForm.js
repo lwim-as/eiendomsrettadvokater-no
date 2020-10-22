@@ -2,7 +2,7 @@ import { form } from '../styles/Page.module.css'
 
 function PageForm() {
     return (
-        <form className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+        <form action="/tilbud-mottatt" className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="contact" />
             <label>
                 Fullt navn:
