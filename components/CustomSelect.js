@@ -1,35 +1,36 @@
 import { useContext, useRef, useState } from "react"
 import { FormContext } from "../FormContext"
 
-import { select_container, selected_item, select_header, has_selected } from '../styles/Sidebar.module.css'
+import { select_container, selected_item, select_header, has_selected, drop_btn } from '../styles/Sidebar.module.css'
 
-export function CustomSelect({ name, hint, options }) {
+export function CustomSelect({ name, hint, options}) {
+
     const inputRef = useRef(null)
-
     const { state, setState } = useContext(FormContext)
     const [toggled, setToggled] = useState(false)
 
     function handleChange(e) {
-        setState({ ...state, [inputRef.current.name]: e.target.textContent })
-        setToggled(state => !state)
+        const newValue = state.filter(item => {
+            if (item.name === inputRef.current.dataset.name) {
+                item.value = e.target.textContent
+            }
+        })
+        setState(state => state, ...newValue)
+        setToggled(!toggled)
     }
 
+    function returnValue() {
+        const value = state.filter(item => item.name === name)
 
+        return value[0].value
+    }
 
     return (
         <div className={select_container}>
             <div className={selected_item} onClick={() => setToggled(!toggled)}>
-                {state[name] === "" ? (
-                    <>
-                        <p className={select_header}>{hint}</p>
-                        <input style={{ display: "none" }} ref={inputRef} disabled readOnly name={name} value={state[name]} />
-                    </>
-                ) :
-                    (<>
-                        <p className={select_header, has_selected}>{hint}</p>
-                        <input ref={inputRef} disabled readOnly name={name} value={state[name]} />
-                    </>)}
-                <span>{toggled ? "X" : "V"}</span>
+                <p className={returnValue() === "" ? (select_header) : (select_header, has_selected)}>{hint}</p>
+                <p ref={inputRef} data-name={name}>{returnValue()}</p>
+                <i aria-hidden="true" className={`fal fa-${toggled ? "times" : "angle-down"} ${drop_btn}`}></i>
             </div>
             {toggled ? (
                 <ul>

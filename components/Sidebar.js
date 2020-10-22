@@ -1,15 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
-import { sidebar_container, form, form_step, form_indicator_container } from '../styles/Sidebar.module.css'
+import { sidebar_container, form, form_step, disclaimer } from '../styles/Sidebar.module.css'
 import { CustomSelect } from './CustomSelect';
 import Link from 'next/link';
 
 import { FormContext } from '../FormContext'
+import { useRouter } from 'next/router';
 
 export default function Sidebar() {
 
     const { state, setState } = useContext(FormContext)
-
     const encode = (data) => {
         return Object.keys(data)
             .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
@@ -18,17 +18,30 @@ export default function Sidebar() {
 
     function handleChange(e) {
         const { name, value } = e.target
-        setState({ ...state, [name]: value })
+        const newValue = state.filter(item => {
+            if (item.name === name) {
+                item.value = value
+            }
+        })
+
+        setState(state, ...newValue)
     }
 
     return (
         <aside className={sidebar_container}>
             <MultistepForm
                 handleSubmit={(state) => {
+                    let data = {}
+
+                    state.forEach(item => {
+                        data = { ...data, [item.name]: item.value }
+                    })
+
+                    console.log(data)
                     return fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode({ "form-name": "sidebar", ...state })
+                        body: encode({ "form-name": "sidebar", ...data })
                     })
                 }}
             >
@@ -38,7 +51,17 @@ export default function Sidebar() {
                     <CustomSelect
                         name="advokat_type"
                         hint="Hva handler saken om?"
-                        options={["Annet", "Heve boligkjøp", "Prisavslag og erstatning", "Klage på nybygg", "Selgers rettigheter", "Skjulte feil og mangler", "Håndverkertvister", "Nabotvister", "Plan-og bygningsrett"]}
+                        options={[
+                            "Annet",
+                            "Heve boligkjøp",
+                            "Prisavslag og erstatning",
+                            "Klage på nybygg",
+                            "Selgers rettigheter",
+                            "Skjulte feil og mangler",
+                            "Håndverkertvister",
+                            "Nabotvister",
+                            "Plan-og bygningsrett"
+                        ]}
                     />
                 </FormStep>
                 <FormStep>
@@ -46,24 +69,25 @@ export default function Sidebar() {
                     <CustomSelect
                         name="advokat_type"
                         hint="Du har valgt:"
-                        options={["Annet", "Heve boligkjøp", "Prisavslag og erstatning", "Klage på nybygg", "Selgers rettigheter", "Skjulte feil og mangler", "Håndverkertvister", "Nabotvister", "Plan-og bygningsrett"]}
+                        options={[
+                            "Annet",
+                            "Heve boligkjøp",
+                            "Prisavslag og erstatning",
+                            "Klage på nybygg",
+                            "Selgers rettigheter",
+                            "Skjulte feil og mangler",
+                            "Håndverkertvister",
+                            "Nabotvister",
+                            "Plan-og bygningsrett"
+                        ]}
                     />
-                    <textarea name="description" onChange={handleChange} />
+                    <FormField name="description" type="textarea" label="Beskriv oppdraget kort" handleChange={handleChange} />
                 </FormStep>
                 <FormStep>
                     <h2>Din informasjon:</h2>
-                    <label>
-                        Navn
-                        <input onChange={handleChange} name="name" type="text" />
-                    </label>
-                    <label>
-                        E-post
-                        <input onChange={handleChange} name="email" type="email" />
-                    </label>
-                    <label>
-                        Telefon
-                        <input onChange={handleChange} name="phone" type="tel" />
-                    </label>
+                    <FormField name="name" label="Navn" handleChange={handleChange} />
+                    <FormField name="email" label="E-post" type="email" handleChange={handleChange} />
+                    <FormField name="phone" label="Telefon" type="tel" handleChange={handleChange} />
                 </FormStep>
             </MultistepForm>
         </aside>
@@ -75,13 +99,15 @@ export function FormStep({ children }) {
 }
 
 export function MultistepForm({ children, handleSubmit }) {
+    const router = useRouter()
+    const { state } = useContext(FormContext)
 
-    const { state, setState } = useContext(FormContext)
-
+    /*
     function handleChange(e) {
+        console.log(state[name])
         const { name, value } = e.target
         setState({ [name]: value })
-    }
+    }*/
 
     const childrenArr = React.Children.toArray(children)
 
@@ -97,17 +123,25 @@ export function MultistepForm({ children, handleSubmit }) {
             onSubmit={async (e) => {
                 e.preventDefault()
                 if (isLastStep()) {
-                    await handleSubmit(state)
+                    const res = await handleSubmit(state)
+
+                    if (res.status === 200) {
+                        router.push("/tilbud-mottatt")
+                    } else {
+                        console.log(state.error)
+                    }
+
                 } else {
                     setStep(step => step + 1)
                 }
             }}
-            className={form} action="/tilbud-mottatt" name="sidebar" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
-            <input onChange={handleChange} hidden disabled name="name" />
-            <input onChange={handleChange} hidden disabled name="advokat_type" />
-            <input onChange={handleChange} hidden disabled name="email" />
-            <input onChange={handleChange} hidden disabled name="phone" />
-            <input onChange={handleChange} hidden disabled name="description" />
+            className={form}
+            name="sidebar"
+            method="post"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+        >
+
             {currentChild}
             <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>
                 {step > 0 ? <button type="button" onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
@@ -116,9 +150,29 @@ export function MultistepForm({ children, handleSubmit }) {
             {step === 0 ? (
                 <>
                     <p style={{ textAlign: "center", fontWeight: "300", margin: "0" }}>En tjeneste av <Link href="https://advokatmatch.no"><a target="_blank" style={{ textDecoration: "underline", color: "blue" }}>advokatmatch.no</a></Link></p>
-                    <p style={{ fontSize: "12px", fontWeight: "300", color: "#545454", textAlign: "center" }}>Informasjonen sendes kun til advokatene du mottar tilbud fra, og brukes ikke til noe annet.</p>
+                    <p className={disclaimer}>Informasjonen sendes kun til advokatene du mottar tilbud fra, og brukes ikke til noe annet.</p>
                 </>
             ) : null}
         </form>
+    )
+}
+
+export function FormField({ type = "text", name, label, handleChange }) {
+    const inputRef = useRef(null)
+
+    if (type !== "textarea") {
+        return (
+            <label>
+                {label}
+                <input ref={inputRef} name={name} onChange={handleChange} type={type} />
+            </label>
+        )
+    }
+
+    return (
+        <label>
+            {label}
+            <textarea ref={inputRef} onChange={handleChange} name={name} />
+        </label>
     )
 }

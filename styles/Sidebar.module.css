@@ -30,6 +30,11 @@
     font-weight: 600;
     font-family: "Open Sans", sans-serif;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 6px 0px;
+    transition: background-color .2s ease-in-out;
+}
+
+.form button[type="submit"]:hover {
+    background-color: var(--cta-color-accent);
 }
 
 .form button[type="button"] {
@@ -57,6 +62,22 @@
     text-align: center;
     font-weight: 300;
     margin-bottom: 0;
+}
+
+.drop_btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    color: #545454;
+}
+
+.disclaimer {
+    line-height: normal;
+    font-size: 12px;
+    font-weight: 300;
+    color: #545454;
+    text-align: center
 }
 
 .form_step label {
@@ -88,30 +109,30 @@
 
 .selected_item {
     cursor: pointer;
-    padding: 1rem .5rem;
+    padding: .7rem .5rem;
     position: relative;
     z-index: 3;
-    border-bottom: 1.5px darkgray solid;
+    border: 1px darkgray solid;
+    border-radius: .2rem;
     display: flex;
     justify-content: space-between;
 }
 
-.selected_item  input {
-    border: none;
-    background-color: white;
+.selected_item  p:last-of-type {
     margin: 0;
-    padding: 0;
 }
 
 .select_header {
     margin: 0;
+    top: 0;
 }
 
 .has_selected {
     font-size: .7rem !important;
     margin: 0;
     position: absolute;
-    top: -15px;
+    top: -7px;
+    transition: top .2s ease-in-out;
 }
 
 .select_container ul {

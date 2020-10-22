@@ -20,7 +20,7 @@
   text-decoration: none;
   margin-bottom: 0;
   line-height: 1.3;
-  font-size: 2.7rem;
+  font-size: clamp(2rem, 2.7rem, 5vw);
 }
 
 .single_inner_content {

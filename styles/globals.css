@@ -1,5 +1,6 @@
 :root {
   --cta-color: #00c76b;
+  --cta-color-accent: rgb(16, 168, 85);
 }
 
 html {
@@ -40,5 +41,5 @@ img {
 
 p {
   line-height: 30px;
-    font-size: 1.05rem;
+  font-size: 1.05rem;
 }
