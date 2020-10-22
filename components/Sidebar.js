@@ -21,17 +21,15 @@ export default function Sidebar() {
                     description: "",
                     advokat_type: ""
                 }}
-                onSubmit={async (values ) => {
+                onSubmit={(values) => {
                     console.log(values)
-                    const res = await fetch("/", {
+                    fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode({ "form-name": "contact", ...values })
                     })
-
-                    const data = res.json()
-
-                    console.log(data)
+                        .then(() => alert("Success!"))
+                        .catch(error => alert(error));
                 }}
             >
                 <FormikStep>
@@ -47,12 +45,16 @@ export default function Sidebar() {
                         <option value="Nabotvister">Nabotvister</option>
                         <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
                     </Field>
+                    <Field hidden disabled name="name" type="text" />
+                    <Field hidden disabled name="email" type="email" />
+                    <Field hidden disabled name="phone" type="tel" />
+                    <Field hidden disabled name="description" as="textarea" />
                 </FormikStep>
                 <FormikStep>
                     <Field name="description" as="textarea" />
                 </FormikStep>
                 <FormikStep>
-                    <Field name="name" type="text" />
+                    <Field hidden disabled name="name" type="text" />
                     <Field name="email" type="email" />
                     <Field name="phone" type="tel" />
                 </FormikStep>
