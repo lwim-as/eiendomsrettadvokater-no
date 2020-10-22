@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 
-import { sidebar_container, form, form_step } from '../styles/Sidebar.module.css'
+import { sidebar_container, form, form_step, form_indicator_container } from '../styles/Sidebar.module.css'
+import { CustomSelect } from './CustomSelect';
+import Link from 'next/link';
 
 export default function Sidebar() {
+    const [toggled, setToggled] = useState(false)
+    const [selectedItem, setSelectedItem] = useState("")
+
+    function handleChange(e) {
+        setSelectedItem(e.target.textContent)
+        setToggled(state => !state)
+    }
 
     const encode = (data) => {
         return Object.keys(data)
@@ -13,7 +22,7 @@ export default function Sidebar() {
 
     return (
         <aside className={sidebar_container}>
-            <FormikStepper
+            <MultistepForm
                 initialValues={{
                     name: "",
                     phone: "",
@@ -26,54 +35,64 @@ export default function Sidebar() {
                     fetch("/", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode({ "form-name": "contact", ...values })
+                        body: encode({ "form-name": "sidebar", ...values })
                     })
-                        .then(() => alert("Success!"))
-                        .catch(error => alert(error));
                 }}
             >
-                <FormikStep>
-                    <Field name="advokat_type" as="select">
-                        <option value="">---</option>
-                        <option value="Annet">Annet</option>
-                        <option value="Heve boligkjøp">Heve boligkjøp</option>
-                        <option value="Prisavslag og erstatning">Prisavslag og erstatning</option>
-                        <option value="Klage på nybygg">Klage på nybygg</option>
-                        <option value="Selgers rettigheter">Selgers rettigheter</option>
-                        <option value="Skjulte feil og mangler">Skjulte feil og mangler</option>
-                        <option value="Håndverkertvister">Håndverkertvister</option>
-                        <option value="Nabotvister">Nabotvister</option>
-                        <option value="Plan-og bygningsrett">Plan-og bygningsrett</option>
-                    </Field>
-                    <Field hidden disabled name="name" type="text" />
-                    <Field hidden disabled name="email" type="email" />
-                    <Field hidden disabled name="phone" type="tel" />
-                    <Field hidden disabled name="description" as="textarea" />
-                </FormikStep>
-                <FormikStep>
+                <FormStep>
+                    <h2>Få tilbud fra flere advokater</h2>
+                    <p>Sammenlign tilbud fra flere advokater.<br />Å motta tilbud er <u>gratis og uforpliktende.</u></p>
+                    <CustomSelect
+                        hint="Hva handler saken om?"
+                        setToggled={setToggled}
+                        toggleState={toggled}
+                        value={selectedItem}
+                        handleChange={handleChange}
+                        name="advokat_type"
+                        options={["Annet", "Heve boligkjøp", "Prisavslag og erstatning", "Klage på nybygg", "Selgers rettigheter", "Skjulte feil og mangler", "Håndverkertvister", "Nabotvister", "Plan-og bygningsrett"]} />
+                </FormStep>
+                <FormStep>
+                    <h2>Beskriv oppdraget:</h2>
+                    <CustomSelect
+                        hint="Du har valgt:"
+                        setToggled={setToggled}
+                        toggleState={toggled}
+                        value={selectedItem}
+                        handleChange={handleChange}
+                        name="advokat_type"
+                        options={["Annet", "Heve boligkjøp", "Prisavslag og erstatning", "Klage på nybygg", "Selgers rettigheter", "Skjulte feil og mangler", "Håndverkertvister", "Nabotvister", "Plan-og bygningsrett"]} />
                     <Field name="description" as="textarea" />
-                </FormikStep>
-                <FormikStep>
-                    <Field hidden disabled name="name" type="text" />
-                    <Field name="email" type="email" />
-                    <Field name="phone" type="tel" />
-                </FormikStep>
-            </FormikStepper>
+                </FormStep>
+                <FormStep>
+                    <h2>Din informasjon:</h2>
+                    <label>
+                        Navn
+                        <Field name="name" type="text" />
+                    </label>
+                    <label>
+                        E-post
+                        <Field name="email" type="email" />
+                    </label>
+                    <label>
+                        Telefon
+                        <Field name="phone" type="tel" />
+                    </label>
+                </FormStep>
+            </MultistepForm>
         </aside>
     );
 }
 
-export function FormikStep({ children }) {
+export function FormStep({ children }) {
     return (
         <div className={form_step}>{children}</div>)
 }
 
-export function FormikStepper({ children, ...props }) {
+export function MultistepForm({ children, ...props }) {
     const childrenArr = React.Children.toArray(children)
 
     const [step, setStep] = useState(0)
     const currentChild = childrenArr[step]
-
 
     function isLastStep() {
         return step === childrenArr.length - 1
@@ -82,17 +101,33 @@ export function FormikStepper({ children, ...props }) {
     return (
         <Formik
             {...props}
-            onSubmit={async (values, helpers, e) => {
+            onSubmit={async (values, helpers) => {
                 if (isLastStep()) {
-                    await props.onSubmit(values, helpers, e)
+                    await props.onSubmit(values, helpers)
                 } else {
                     setStep(step => step + 1)
                 }
             }}>
-            <Form className={form} name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+            <Form className={form} name="sidebar" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+                <div className={form_indicator_container}>
+                    {}
+                </div>
+                <Field hidden disabled name="name" type="text" />
+                <Field hidden disabled name="advokat_type" type="text" />
+                <Field hidden disabled name="email" type="email" />
+                <Field hidden disabled name="phone" type="tel" />
+                <Field hidden disabled name="description" as="textarea" />
                 {currentChild}
-                {step > 0 ? <button onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
-                <button type="submit">{isLastStep() ? "Send" : "Neste"}</button>
+                <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>
+                    {step > 0 ? <button type="button" onClick={() => setStep(step => step - 1)}>Tilbake</button> : null}
+                    <button type="submit">{isLastStep() ? "Send" : (step === 0 ? "Få 3 tilbud" : "Neste")}</button>
+                </div>
+                {step === 0 ? (
+                    <>
+                        <p style={{ textAlign: "center", fontWeight: "300", margin: "0" }}>En tjeneste av <Link href="https://advokatmatch.no"><a target="_blank" style={{ textDecoration: "underline", color: "blue" }}>advokatmatch.no</a></Link></p>
+                        <p style={{ fontSize: "12px", fontWeight: "300", color: "#545454", textAlign: "center" }}>Informasjonen sendes kun til advokatene du mottar tilbud fra, og brukes ikke til noe annet.</p>
+                    </>
+                ) : null}
             </Form>
         </Formik>
     )

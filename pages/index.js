@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import FrontPagePost from '../components/FrontPagePost'
 import { getPaginatedPosts } from '../lib/graphql-api'
 
-import { header, content_container, category_content, load_more_btn } from "../styles/Home.module.css"
+import { content_container, category_content, load_more_btn } from "../styles/Home.module.css"
 
 function Home({ posts }) {
 
@@ -40,7 +40,7 @@ function Home({ posts }) {
   return (
     <>
       <Head>
-        <title>Forbrukertorget</title>
+        <title>Eiendomsrettadvokater</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={category_content}>

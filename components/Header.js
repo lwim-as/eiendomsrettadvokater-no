@@ -8,7 +8,7 @@ export function Header() {
                 <figure>
                     <Link href="/">
                         <a>
-                            <img src="https://eiendomsrettadvokater.no/wp-content/uploads/2019/04/black.png" alt="logo" />
+                            <img src="./images/eiendomsrett.png" alt="logo" />
                         </a>
                     </Link>
                 </figure>

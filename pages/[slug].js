@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Sidebar from '../components/Sidebar'
 import { getPostDataBySlug, getPostPaths } from "../lib/graphql-api"
 
-import { page_container, page_content } from '../styles/Post.module.css'
+import { page_container, page_content, thumbnail } from '../styles/Post.module.css'
 
 function Post({ post }) {
     const { seo, title, content, featuredImage } = post
@@ -16,7 +16,7 @@ function Post({ post }) {
             <div className={page_container}>
                 <div className={page_content}>
                     <h1>{title}</h1>
-                    <img src={featuredImage.node.sourceUrl} />
+                    <img className={thumbnail} src={featuredImage.node.sourceUrl} />
                     <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 </div>
                 <Sidebar/>

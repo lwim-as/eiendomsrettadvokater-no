@@ -1,0 +1,44 @@
+.page_content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.page_content a {
+    color: blue;
+}
+
+.form {
+    max-width: 500px;
+}
+
+.form label {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form input,
+.form textarea {
+    padding: .5rem;
+}
+
+.form textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.form button[type="submit"] {
+    background-color: #27ae60;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .5rem 0;
+    width: 50%;
+    min-width: 250px;
+    margin: .5rem auto 0;
+}

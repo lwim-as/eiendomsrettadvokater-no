@@ -63,6 +63,7 @@
     color: white;
     border-radius: .2rem;
     box-shadow: 2px 2px 5px #a9a9a9;
+    cursor: pointer;
 }
 
 .load_more_btn:disabled {

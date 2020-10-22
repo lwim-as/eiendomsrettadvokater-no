@@ -17,8 +17,33 @@
     height: fit-content;
 }
 
+.form button[type="submit"] {
+    cursor: pointer;
+    padding: 1rem 0;
+    width: 80%;
+    display: block;
+    margin: 20px auto 10px;
+    background-color: var(--cta-color);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 6px 0px;
+}
+
+.form button[type="button"] {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .form_step {
     width: 100%;
+}
+
+.form_step a {
+    text-decoration: underline;
 }
 
 .form_step h2 {
@@ -31,4 +56,84 @@
     color: black;
     text-align: center;
     font-weight: 300;
+    margin-bottom: 0;
+}
+
+.form_step label {
+    color: #545454;
+    font-size: .8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form_step textarea,
+.form_step input {
+    margin: .3rem 0 .5rem;
+    padding: .5rem;
+    border-radius: 0.2rem;
+    border: 1px solid lightgrey;
+    font-size: 14px;
+    width: 100%;
+    resize: none;
+}
+
+.form_step textarea {
+    height: 100px;
+}
+
+.select_container {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.selected_item {
+    cursor: pointer;
+    padding: 1rem .5rem;
+    position: relative;
+    z-index: 3;
+    border-bottom: 1.5px darkgray solid;
+    display: flex;
+    justify-content: space-between;
+}
+
+.select_header {
+    margin: 0;
+}
+
+.has_selected {
+    font-size: .7rem !important;
+    margin: 0;
+    position: absolute;
+    top: -10px;
+}
+
+.select_container ul {
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px -4px rgb(78, 78, 78);
+}
+
+.select_container li {
+    padding: .6rem .5rem;
+    background-color: white;
+    transition: background-color .2s ease-in-out;
+}
+
+.select_container li:hover {
+    transform:  #f3f3f3;
+}
+
+.select_container li:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+@media (max-width: 900px) {
+    .sidebar_container {
+        margin: 50px auto;
+    }
 }

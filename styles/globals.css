@@ -1,3 +1,7 @@
+:root {
+  --cta-color: #00c76b;
+}
+
 html {
   overflow-x: hidden;
 }
