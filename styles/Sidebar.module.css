@@ -159,6 +159,22 @@
   transition: top 0.2s ease-in-out;
 }
 
+.select_error,
+.field_error {
+  font-size: 0.7rem !important;
+  margin: 0;
+  color: red;
+}
+
+.select_error {
+  position: absolute;
+  top: 0px;
+}
+
+.has_error {
+  border-color: red !important;
+}
+
 .select_container ul {
   width: 100%;
   position: absolute;

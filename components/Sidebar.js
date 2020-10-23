@@ -1,31 +1,40 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { sidebar_container } from '../styles/Sidebar.module.css'
 
-import { CustomSelect } from './CustomSelect';
-import { FormContext } from '../FormContext'
+import { Select } from './Form/Select';
 import { MultistepForm } from './Form/MultistepForm';
 import { FormStep } from './Form/FormStep';
-import { FormField } from './Form/FormField';
+import { object, string } from 'yup';
+import InputField from './Form/InputField';
+import { useNetlify } from '../lib/hooks/useNetlify';
 
-export default function Sidebar() {
-
-    const { state, setState } = useContext(FormContext)
-
-    function handleChange(e) {
-        const { name, value } = e.target
-        const newValue = state.filter(item => item.name === name ? item.value = value : null)
-
-        setState(state, ...newValue)
-    }
+export function Sidebar() {
 
     return (
         <aside className={sidebar_container}>
-            <MultistepForm>
-                <FormStep>
+            <MultistepForm
+                initialValues={{
+                    name: "",
+                    email: "",
+                    phone: "",
+                    description: "",
+                    advokat_type: ""
+                }}
+                handleSubmit={async (values, helpers) => {
+                    const res = await useNetlify(values)
+                }}
+            >
+                <FormStep
+                    validationSchema={
+                        object().shape({
+                            advokat_type: string().required("Dette feltet er obligatorisk")
+                        })
+                    }
+                >
                     <h2>Få tilbud fra flere advokater</h2>
                     <p>Sammenlign tilbud fra flere advokater.<br />Å motta tilbud er <u>gratis og uforpliktende.</u></p>
-                    <CustomSelect
+                    <Select
                         name="advokat_type"
                         hint="Hva handler saken om?"
                         options={[
@@ -41,9 +50,16 @@ export default function Sidebar() {
                         ]}
                     />
                 </FormStep>
-                <FormStep>
+                <FormStep
+                    validationSchema={
+                        object().shape({
+                            advokat_type: string().required("Dette feltet er obligatorisk"),
+                            description: string().required("Dette feltet er obligatorisk")
+                        })
+                    }
+                >
                     <h2>Beskriv oppdraget:</h2>
-                    <CustomSelect
+                    <Select
                         name="advokat_type"
                         hint="Du har valgt:"
                         options={[
@@ -58,13 +74,21 @@ export default function Sidebar() {
                             "Plan-og bygningsrett"
                         ]}
                     />
-                    <FormField name="description" type="textarea" label="Beskriv oppdraget kort" handleChange={handleChange} />
+                    <InputField label="Beskriv oppdraget kort" name="description" component="textarea" />
                 </FormStep>
-                <FormStep>
+                <FormStep
+                    validationSchema={
+                        object().shape({
+                            name: string().required("Dette feltet er obligatorisk"),
+                            email: string().email("Ugylding e-post").required("Dette feltet er obligatorisk"),
+                            phone: string().required("Dette feltet er obligatorisk")
+                        })
+                    }
+                >
                     <h2>Din informasjon:</h2>
-                    <FormField name="name" label="Navn" handleChange={handleChange} />
-                    <FormField name="email" label="E-post" type="email" handleChange={handleChange} />
-                    <FormField name="phone" label="Telefon" type="tel" handleChange={handleChange} />
+                    <InputField label="Navn" name="name" />
+                    <InputField label="Email" name="email" type="email" />
+                    <InputField label="Telefon" name="phone" type="tel" />
                 </FormStep>
             </MultistepForm>
         </aside>

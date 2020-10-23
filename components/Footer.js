@@ -51,7 +51,7 @@ export function Footer() {
     )
 }
 
-export function FooterItem({ item }) {
+function FooterItem({ item }) {
     return (
         <li>
             <Link href={`/${item.slug}`}>
