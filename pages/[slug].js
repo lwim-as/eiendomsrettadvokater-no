@@ -6,7 +6,8 @@ import { page_container, page_content, thumbnail } from '../styles/Post.module.c
 
 function Post({ post }) {
     const { seo, title, content, featuredImage } = post
-
+    const { srcSet: sources, sourceUrl, sizes } = featuredImage.node
+    
     return (
         <>
             <Head>
@@ -16,10 +17,16 @@ function Post({ post }) {
             <div className={page_container}>
                 <div className={page_content}>
                     <h1>{title}</h1>
-                    <img className={thumbnail} src={featuredImage.node.sourceUrl} />
+                    <picture>
+                        <source
+                            srcSet={sources}
+                            sizes={sizes}
+                        />
+                        <img lazy="true" className={thumbnail} src={sourceUrl} />
+                    </picture>
                     <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 </div>
-                <Sidebar/>
+                <Sidebar />
             </div>
         </>
     )
