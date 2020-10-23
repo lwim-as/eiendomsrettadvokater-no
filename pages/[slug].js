@@ -1,3 +1,4 @@
+import { FormikSidebar } from '../components/FormikSidebar'
 import Head from 'next/head'
 import Sidebar from '../components/Sidebar'
 import { getPostDataBySlug, getPostPaths } from "../lib/graphql-api"
@@ -7,7 +8,7 @@ import { page_container, page_content, thumbnail } from '../styles/Post.module.c
 function Post({ post }) {
     const { seo, title, content, featuredImage } = post
     const { srcSet: sources, sourceUrl, sizes } = featuredImage.node
-    
+
     return (
         <>
             <Head>
@@ -26,7 +27,7 @@ function Post({ post }) {
                     </picture>
                     <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 </div>
-                <Sidebar />
+                <FormikSidebar />
             </div>
         </>
     )

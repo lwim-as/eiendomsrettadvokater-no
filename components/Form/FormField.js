@@ -1,13 +1,16 @@
-import { useRef } from "react"
-
 export function FormField({ type = "text", name, label, handleChange }) {
-    const inputRef = useRef(null)
-
     if (type !== "textarea") {
         return (
             <label>
                 {label}
-                <input ref={inputRef} name={name} onChange={handleChange} type={type} />
+                <input
+                    ref={inputRef}
+                    onFocus={handleFocus}
+                    onBlur={handleFocus}
+                    name={name}
+                    onChange={handleChange}
+                    type={type}
+                />
             </label>
         )
     }
@@ -15,7 +18,13 @@ export function FormField({ type = "text", name, label, handleChange }) {
     return (
         <label>
             {label}
-            <textarea ref={inputRef} onChange={handleChange} name={name} />
+            <textarea
+                ref={inputRef}
+                onFocus={handleFocus}
+                onBlur={handleFocus}
+                onChange={handleChange}
+                name={name}
+            />
         </label>
     )
 }

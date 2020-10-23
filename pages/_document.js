@@ -6,7 +6,7 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                <script defer src="https://kit.fontawesome.com/100f05b54f.js" crossorigin="anonymous"></script>
+                <script defer src="https://kit.fontawesome.com/100f05b54f.js" crossOrigin="anonymous"></script>
                 </Head>
                 <body>
                     <Main />
