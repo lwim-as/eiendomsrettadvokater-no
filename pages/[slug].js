@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { Seo } from '../components/Seo'
 import { Sidebar } from '../components/Sidebar'
 import { getPostDataBySlug, getPostPaths } from "../lib/graphql-api"
 
@@ -10,10 +11,7 @@ function Post({ post }) {
 
     return (
         <>
-            <Head>
-                <title>{seo.title}</title>
-                <meta name="description" content={seo.metaDesc} />
-            </Head>
+            <Seo seo={seo} />
             <div className={page_container}>
                 <div className={page_content}>
                     <h1>{title}</h1>
