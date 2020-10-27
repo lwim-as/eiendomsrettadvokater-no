@@ -8,7 +8,7 @@ export function Header() {
                 <figure>
                     <Link href="/">
                         <a>
-                            <img src="./images/eiendomsrett.png" alt="logo" />
+                            <img src="../images/eiendomsrett.png" alt="logo" />
                         </a>
                     </Link>
                 </figure>

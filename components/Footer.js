@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const lastestPostsQuery = gql`
     {
-    posts(first: 5) {
+    posts(first: 4) {
         edges {
             node {
                 slug
@@ -21,7 +21,7 @@ export function Footer() {
         <footer className={site_footer}>
             <div className={footer_container}>
                 <div className={footer_content}>
-                    <img src="./images/eiendomsrett-hvit.png" />
+                    <img src="../images/eiendomsrett-hvit.png" />
                 </div>
                 <div className={footer_content}>
                     <h4>INFORMASJON</h4>

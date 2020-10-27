@@ -19,7 +19,8 @@ export function Sidebar() {
                     email: "",
                     phone: "",
                     description: "",
-                    advokat_type: ""
+                    advokat_type: "",
+                    concent: ""
                 }}
                 handleSubmit={async (values, helpers) => {
                     const res = await useNetlify(values)
@@ -81,7 +82,8 @@ export function Sidebar() {
                         object().shape({
                             name: string().required("Dette feltet er obligatorisk"),
                             email: string().email("Ugylding e-post").required("Dette feltet er obligatorisk"),
-                            phone: string().required("Dette feltet er obligatorisk")
+                            phone: string().required("Dette feltet er obligatorisk"),
+                            concent: string().equals(["true"], "Du må godta personvernsreglene").required("Du må godta personvernsreglene")
                         })
                     }
                 >
@@ -89,6 +91,7 @@ export function Sidebar() {
                     <InputField label="Navn" name="name" />
                     <InputField label="Email" name="email" type="email" />
                     <InputField label="Telefon" name="phone" type="tel" />
+                    <InputField style={{ flexDirection: "row-reverse" }} label={`For å fullføre skjemaet må du godta våre <a href="/personvern/">personvernsregler</a>.`} type="checkbox" name="concent" />
                 </FormStep>
             </MultistepForm>
         </aside>
