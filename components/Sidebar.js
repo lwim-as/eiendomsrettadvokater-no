@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { sidebar_container } from '../styles/Sidebar.module.css'
 
@@ -9,9 +9,11 @@ import { object, string } from 'yup';
 import InputField from './Form/InputField';
 import { useNetlify } from '../lib/hooks/useNetlify';
 import { useRouter } from 'next/router';
+import { FormSuccess } from './Form/FormSuccess';
 
 export function Sidebar() {
     const router = useRouter()
+    const [isSuccess, setIsSuccess] = useState(false)
     return (
         <aside className={sidebar_container}>
             <MultistepForm
@@ -26,8 +28,8 @@ export function Sidebar() {
                 handleSubmit={async (values, helpers) => {
                     const res = await useNetlify(values)
 
-                    if(res.status === 200) {
-                        router.push("/tilbud-mottatt")
+                    if (res.status === 200) {
+                        setIsSuccess(true)
                     }
                 }}
             >
@@ -99,6 +101,7 @@ export function Sidebar() {
                     <InputField style={{ flexDirection: "row-reverse" }} label={`For å fullføre skjemaet må du godta våre <a href="/personvern/">personvernsregler</a>.`} type="checkbox" name="concent" />
                 </FormStep>
             </MultistepForm>
+            {isSuccess ? <FormSuccess handleState={setIsSuccess} /> : null}
         </aside>
     );
 }

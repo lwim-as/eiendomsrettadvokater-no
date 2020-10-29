@@ -160,6 +160,27 @@
   transition: top 0.2s ease-in-out;
 }
 
+.success_container {
+  padding: 1rem;
+  margin-top: 1rem;
+  top: 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 10px 0px;
+  width: 100%;
+  position: relative;
+}
+
+.success_container p {
+  margin: 0;
+}
+
+.success_container i {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 1.1rem;
+}
+
 .select_error,
 .field_error {
   font-size: 0.7rem !important;
