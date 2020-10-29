@@ -4,7 +4,7 @@ import '../styles/globals.css'
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 
 const client = new ApolloClient({
-  uri: "https://eiendomsrettadvokater.no/graphql",
+  uri: "https://lwim.no/eiendomsrettadvokater/graphql",
   cache: new InMemoryCache()
 })
 
