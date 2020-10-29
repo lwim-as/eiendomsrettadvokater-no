@@ -8,11 +8,9 @@ import { FormStep } from './Form/FormStep';
 import { object, string } from 'yup';
 import InputField from './Form/InputField';
 import { useNetlify } from '../lib/hooks/useNetlify';
-import { useRouter } from 'next/router';
 import { FormSuccess } from './Form/FormSuccess';
 
 export function Sidebar() {
-    const router = useRouter()
     const [isSuccess, setIsSuccess] = useState(false)
     return (
         <aside className={sidebar_container}>

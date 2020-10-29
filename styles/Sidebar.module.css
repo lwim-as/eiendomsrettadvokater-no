@@ -174,7 +174,8 @@
   margin: 0;
 }
 
-.success_container i {
+.success_container svg {
+  cursor: pointer;
   position: absolute;
   right: 10px;
   top: 10px;

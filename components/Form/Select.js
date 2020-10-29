@@ -1,5 +1,7 @@
 import { useField } from "formik"
 import { useState } from "react"
+import { faAngleDown, faTimes } from '@fortawesome/pro-light-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import {
     select_container,
@@ -29,7 +31,7 @@ export function Select({ name, hint, options }) {
             <div className={selected_item} onFocus={() => setToggled(!toggled)} onClick={() => setToggled(!toggled)}>
                 <p className={value === "" ? (select_header) : (select_header, has_selected)}>{hint}</p>
                 <p tabIndex={0} data-name={name}>{value}</p>
-                <i aria-hidden="true" className={`fal fa-${toggled ? "times" : "angle-down"} ${drop_btn}`}></i>
+                <FontAwesomeIcon className={drop_btn} icon={toggled ? faAngleDown : faTimes}/>
                 {error !== "" ? <span className={select_error}>{error}</span> : null}
             </div>
             {toggled ? (
