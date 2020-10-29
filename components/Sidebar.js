@@ -8,9 +8,10 @@ import { FormStep } from './Form/FormStep';
 import { object, string } from 'yup';
 import InputField from './Form/InputField';
 import { useNetlify } from '../lib/hooks/useNetlify';
+import { useRouter } from 'next/router';
 
 export function Sidebar() {
-
+    const router = useRouter()
     return (
         <aside className={sidebar_container}>
             <MultistepForm
@@ -24,6 +25,10 @@ export function Sidebar() {
                 }}
                 handleSubmit={async (values, helpers) => {
                     const res = await useNetlify(values)
+
+                    if(res.status === 200) {
+                        router.push("/tilbud-mottatt")
+                    }
                 }}
             >
                 <FormStep
