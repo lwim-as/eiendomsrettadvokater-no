@@ -10,10 +10,23 @@ import InputField from './Form/InputField';
 import { useNetlify } from '../lib/hooks/useNetlify';
 import { FormSuccess } from './Form/FormSuccess';
 import { useRouter } from 'next/router'
+import { isMobile } from 'mobile-device-detect';
 
 export function Sidebar() {
     const { query } = useRouter()
-    
+
+    let d = new Date()
+
+    function checkTime(time) {
+        return time < 10 ? "0" + time : time
+    }
+
+    let year = d.getFullYear().toString().substring(2)
+    let month = checkTime(d.getMonth())
+    let day = checkTime(d.getDay())
+    let hour = checkTime(d.getHours())
+    let minute = checkTime(d.getMinutes())
+
     const [isSuccess, setIsSuccess] = useState(false)
     return (
         <aside className={sidebar_container}>
@@ -24,10 +37,15 @@ export function Sidebar() {
                     phone: "",
                     description: "",
                     advokat_type: "",
-                    concent: ""
+                    concent: "",
+                    dateStamp: day + '.' + month + '.' + year,
+                    timeStamp: hour + ':' + minute,
+                    device: isMobile ? "Mobile" : "Desktop",
+                    seo: "SEO",
+                    referer: query.slug
                 }}
                 handleSubmit={async (values, helpers) => {
-                    const res = await useNetlify(values, query.slug)
+                    const res = await useNetlify(values)
 
                     if (res.status === 200) {
                         setIsSuccess(true)
