@@ -45,6 +45,7 @@ export function Sidebar() {
                     referer: query.slug
                 }}
                 handleSubmit={async (values, helpers) => {
+                    console.log(values)
                     const res = await useNetlify(values)
 
                     if (res.status === 200) {
