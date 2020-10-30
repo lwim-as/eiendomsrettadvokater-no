@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export echo '/* /index.html  200' | cat >out/_redirects ",
+    "build": "next build && next export && echo '/* /index.html  200' | cat >out/_redirects ",
     "start": "next start"
   },
   "dependencies": {
