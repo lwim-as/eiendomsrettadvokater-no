@@ -18,14 +18,14 @@ export function Select({ name, hint, options }) {
 
     const { value } = field
     const { error } = form
+    const { setValue } = helpers
 
     function handleChange(e) {
-        const { setValue } = helpers
+        
         setValue(e.target.textContent, true)
         setToggled(!toggled)
 
     }
-
     return (
         <div className={select_container}>
             <div className={selected_item} onFocus={() => setToggled(!toggled)} onClick={() => setToggled(!toggled)}>

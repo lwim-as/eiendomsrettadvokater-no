@@ -47,6 +47,7 @@ export function MultistepForm({ children, initialValues, handleSubmit, ...props 
                     <Field hidden readOnly name="referer" />
                     <Field hidden readOnly name="seo" />
                     <Field hidden readOnly name="device" />
+                    <Field hidden readOnly name="state" />
                     <FormProgress currentStep={currentChild} steps={kids} />
                     {currentChild}
                     <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>

@@ -42,7 +42,8 @@ export function Sidebar() {
                     timeStamp: hour + ':' + minute,
                     device: isMobile ? "Mobile" : "Desktop",
                     seo: "SEO",
-                    referer: query.slug
+                    referer: query.slug,
+                    state: ""
                 }}
                 handleSubmit={async (values, helpers) => {
                     console.log(values)
@@ -115,6 +116,23 @@ export function Sidebar() {
                     }
                 >
                     <h2>Din informasjon:</h2>
+                    <Select
+                        name="state"
+                        hint="Velg fylke"
+                        options={[
+                            "Agder",
+                            "Innlandet",
+                            "Møre og Romsdal",
+                            "Nordland",
+                            "Oslo",
+                            "Rogaland",
+                            "Troms og Finnmark",
+                            "Trøndelag",
+                            "Vestfold og Telemark",
+                            "Vestland",
+                            "Viken"
+                        ]}
+                    />
                     <InputField label="Navn" name="name" />
                     <InputField label="Email" name="email" type="email" />
                     <InputField label="Telefon" name="phone" type="tel" />
