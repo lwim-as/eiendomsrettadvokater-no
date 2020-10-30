@@ -33,15 +33,7 @@ export function MultistepForm({ children, initialValues, handleSubmit, ...props 
                 <Form
                     className={form}
                     name="sidebar"
-                    method="post"
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
                 >
-                    <Field hidden readOnly name="name" />
-                    <Field hidden readOnly name="email" />
-                    <Field hidden readOnly name="phone" />
-                    <Field hidden readOnly name="description" />
-                    <Field hidden readOnly name="advokat_type" />
                     <FormProgress currentStep={currentChild} steps={kids} />
                     {currentChild}
                     <div style={step > 0 ? { display: "flex", flexDirection: "column-reverse" } : null}>

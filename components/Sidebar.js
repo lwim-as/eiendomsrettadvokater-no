@@ -9,8 +9,11 @@ import { object, string } from 'yup';
 import InputField from './Form/InputField';
 import { useNetlify } from '../lib/hooks/useNetlify';
 import { FormSuccess } from './Form/FormSuccess';
+import { useRouter } from 'next/router'
 
 export function Sidebar() {
+    const { query } = useRouter()
+    
     const [isSuccess, setIsSuccess] = useState(false)
     return (
         <aside className={sidebar_container}>
@@ -24,7 +27,7 @@ export function Sidebar() {
                     concent: ""
                 }}
                 handleSubmit={async (values, helpers) => {
-                    const res = await useNetlify(values)
+                    const res = await useNetlify(values, query.slug)
 
                     if (res.status === 200) {
                         setIsSuccess(true)
