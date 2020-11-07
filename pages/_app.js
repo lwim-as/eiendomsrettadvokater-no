@@ -1,21 +1,21 @@
 import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import '../styles/globals.css'
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const client = new ApolloClient({
-  uri: "https://lwim.no/eiendomsrettadvokater/graphql",
-  cache: new InMemoryCache()
+    uri: 'https://wp.eiendomsrettadvokater/graphql',
+    cache: new InMemoryCache(),
 })
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <ApolloProvider client={client}>
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
-    </ApolloProvider>
-  )
+    return (
+        <ApolloProvider client={client}>
+            <Header />
+            <Component {...pageProps} />
+            <Footer />
+        </ApolloProvider>
+    )
 }
 
 export default MyApp
