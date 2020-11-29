@@ -45,12 +45,12 @@ export function Sidebar() {
                     referer: query.slug,
                     state: ""
                 }}
-                handleSubmit={async (values, helpers) => {
-                    console.log(values)
+                handleSubmit={async (values, { resetForm }) => {
                     const res = await useNetlify(values)
 
                     if (res.status === 200) {
                         setIsSuccess(true)
+                        resetForm()
                     }
                 }}
             >
