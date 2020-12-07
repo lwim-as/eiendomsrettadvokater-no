@@ -65,8 +65,7 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             category
-        },
-        revalidate: 10
+        }
     }
 }
 
@@ -75,7 +74,7 @@ export async function getStaticPaths() {
 
     return {
         paths: categories.edges.map(({ node }) => `/category/${node.slug}`),
-        fallback: true
+        fallback: false
     }
 }
 
