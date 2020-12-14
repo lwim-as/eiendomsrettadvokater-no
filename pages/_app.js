@@ -1,6 +1,9 @@
 import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import '../styles/globals.css'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import "@fortawesome/fontawesome-svg-core/styles.css"
+config.autoAddCss = false
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 const client = new ApolloClient({
