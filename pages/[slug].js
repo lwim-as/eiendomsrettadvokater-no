@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { Seo } from '../components/Seo'
 import { Sidebar } from '../components/Sidebar'
 import { getPostDataBySlug, getPostPaths } from "../lib/graphql-api"
+import NextImage from 'next/image'
 
 import { page_container, page_content, thumbnail } from '../styles/Post.module.css'
 
@@ -20,7 +21,7 @@ function Post({ post }) {
                             srcSet={sources}
                             sizes={sizes}
                         />
-                        <img lazy="true" className={thumbnail} src={sourceUrl} />
+                        <NextImage width={590} height={395} className={thumbnail} src={sourceUrl} />
                     </picture>
                     <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 </div>
