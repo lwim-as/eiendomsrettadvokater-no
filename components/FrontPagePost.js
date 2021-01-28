@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import NextLink from 'next/link'
-import NextImage from 'next/image'
 
 import { single_inner_content, post_thumbnail, post_content, category_label } from "../styles/FrontPage.module.css"
 
@@ -10,7 +9,7 @@ export function FrontPagePost({ post, className }) {
     return (
         <div className={className}>
             <div className={single_inner_content}>
-                {featuredImage.node.sourceUrl !== undefined ? <NextImage width={290} height={150} className={post_thumbnail} src={featuredImage.node.sourceUrl} /> : null}
+                {featuredImage.node.sourceUrl !== undefined ? <img lazy="true" className={post_thumbnail} src={featuredImage.node.sourceUrl} /> : null}
                 <div className={post_content}>
                     <h2>
                         <NextLink href={`/${slug}`}>

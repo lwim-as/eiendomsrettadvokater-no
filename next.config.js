@@ -3,8 +3,5 @@ const withMDX = require('@next/mdx')({
 })
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'mdx'],
-  trailingSlash: true,
-  images: {
-    domains: ["wp.eiendomsrettadvokater.no"]
-  }
+  trailingSlash: true
 })
