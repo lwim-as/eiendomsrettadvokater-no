@@ -1,13 +1,12 @@
 import Head from 'next/head'
 import { Seo } from '../components/Seo'
 import { Sidebar } from '../components/Sidebar'
-import { getPostDataBySlug, getPostPaths } from "../lib/graphql-api"
+import { getPostDataBySlug, getPostPaths } from '../lib/graphql-api'
 
 import { page_container, page_content, thumbnail } from '../styles/Post.module.css'
 
 function Post({ post }) {
     const { seo, title, content, featuredImage } = post
-    const { srcSet: sources, sourceUrl, sizes } = featuredImage.node
 
     return (
         <>
@@ -15,13 +14,12 @@ function Post({ post }) {
             <div className={page_container}>
                 <div className={page_content}>
                     <h1>{title}</h1>
-                    <picture>
-                        <source
-                            srcSet={sources}
-                            sizes={sizes}
-                        />
-                        <img lazy="true" className={thumbnail} src={sourceUrl} />
-                    </picture>
+                    {featuredImage?.node && (
+                        <picture>
+                            <source srcSet={featuredImage.node.sources} sizes={featuredImage.node.sizes} />
+                            <img lazy='true' className={thumbnail} src={featuredImage.node.sourceUrl} />
+                        </picture>
+                    )}
                     <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 </div>
                 <Sidebar />
@@ -35,13 +33,12 @@ export async function getStaticProps({ params }) {
 
     return {
         props: {
-            post
-        }
+            post,
+        },
     }
 }
 
 export async function getStaticPaths() {
-
     const { posts } = await getPostPaths()
 
     const paths = posts.edges.map(({ node }) => {
@@ -50,7 +47,7 @@ export async function getStaticPaths() {
 
     return {
         paths,
-        fallback: false
+        fallback: false,
     }
 }
 
