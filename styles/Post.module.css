@@ -8,6 +8,11 @@
     padding: 0 .5rem;
 }
 
+.page_container a {
+    text-decoration: underline;
+    color: #00f;
+}
+
 .page_content {
     width: 60%;
 }
