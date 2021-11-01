@@ -136,7 +136,7 @@ export function Sidebar() {
                     <InputField label="Navn" name="name" />
                     <InputField label="Email" name="email" type="email" />
                     <InputField label="Telefon" name="phone" type="tel" />
-                    <InputField style={{ flexDirection: "row-reverse" }} label={`For å fullføre skjemaet må du godta våre <a href="/personvern/">personvernsregler</a>.`} type="checkbox" name="concent" />
+                    <InputField style={{ flexDirection: "row-reverse" }} label={`For å fullføre skjemaet må du godta våre <a href="/personvern/" target="_blank">personvernsregler</a>.`} type="checkbox" name="concent" />
                 </FormStep>
             </MultistepForm>
             {isSuccess ? <FormSuccess handleState={setIsSuccess} /> : null}
