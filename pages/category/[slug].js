@@ -35,7 +35,6 @@ function Category({ category }) {
             }
         }
         fetchMorePosts()
-
     }, [currentPage])
 
     return (
