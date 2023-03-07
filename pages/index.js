@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react'
 import { FrontPagePost } from '../components/FrontPagePost'
 import { getPaginatedPosts } from '../lib/graphql-api'
 
-import { content_container, category_content, load_more_btn } from "../styles/FrontPage.module.css"
+import { content_container, category_content, load_more_btn } from '../styles/FrontPage.module.css'
 
 function FrontPage({ posts }) {
-
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [fetchedData, setFetchedData] = useState([])
@@ -15,7 +14,7 @@ function FrontPage({ posts }) {
   useEffect(() => {
     setPageInfo({
       hasNextPage: posts.pageInfo.hasNextPage,
-      endCursor: posts.pageInfo.endCursor
+      endCursor: posts.pageInfo.endCursor,
     })
   }, [])
 
@@ -33,20 +32,32 @@ function FrontPage({ posts }) {
       }
     }
     fetchMorePosts()
-
   }, [currentPage])
 
+  const filteredPosts = posts.edges.filter(
+    post =>
+      post.node.slug !== 'hvordan-lanet-er-sikret-og-hvorfor-du-burde-velge-lan-med-sikkerhet' &&
+      post.node.slug !== 'oversikt-over-de-ulike-typene-kredittkort'
+  )
 
   return (
     <>
       <Head>
         <title>Eiendomsrettadvokater</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
       <div className={category_content}>
-        {posts.edges.map(({ node }) => <FrontPagePost className={content_container} key={node.slug} post={node} />)}
-        {currentPage > 1 ? fetchedData.map(({ node }) => <FrontPagePost className={content_container} key={node.slug} post={node} />) : null}
-        {pageInfo.hasNextPage ? <button className={load_more_btn} disabled={isLoading} onClick={() => setCurrentPage(current => current + 1)}>{isLoading ? "Laster inn fler" : "Last inn fler"}</button> : null}
+        {filteredPosts.map(({ node }) => (
+          <FrontPagePost className={content_container} key={node.slug} post={node} />
+        ))}
+        {currentPage > 1
+          ? fetchedData.map(({ node }) => <FrontPagePost className={content_container} key={node.slug} post={node} />)
+          : null}
+        {pageInfo.hasNextPage ? (
+          <button className={load_more_btn} disabled={isLoading} onClick={() => setCurrentPage(current => current + 1)}>
+            {isLoading ? 'Laster inn fler' : 'Last inn fler'}
+          </button>
+        ) : null}
       </div>
     </>
   )
@@ -57,8 +68,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      posts
-    }
+      posts,
+    },
   }
 }
 
