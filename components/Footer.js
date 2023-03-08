@@ -61,7 +61,7 @@ export function Footer() {
 function FooterItem({ item }) {
   return (
     <li>
-      <Link href={`/${item.slug}`}>
+      <Link href={`/${item.slug}`} legacyBehavior>
         <a>{item.title}</a>
       </Link>
     </li>
